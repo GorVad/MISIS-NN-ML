@@ -5,10 +5,10 @@ from matplotlib.colors import ListedColormap
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-y = pd.read_csv("DataSets/wine.csv", header=None)
-x = y.iloc[0:178, [7, 12]].values
-y = y.iloc[0:178, 0].values
-y = np.where(y==3, -1, 1)
+y = pd.read_csv("1. LinearClassificator And OneLayerPerceptron/DataSets/iris.csv", header=None)
+x = y.iloc[:150, [0, 2]].values
+y = y.iloc[:150, 4].values
+y = np.where(y == 'Iris-setosa', -1, 1)
 
 
 logreg_clf = LogisticRegression()

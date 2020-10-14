@@ -36,28 +36,27 @@ class Perceptron(object):
         return np.where(self.net_input(x) >= 0.0, 1, -1)
 
 
-# Data retrieval and preperation. Trainig Data
-yTrain = pd.read_csv("DataSets/irisTrainDataSet.csv", header=None)
-xTrain = yTrain.iloc[:75, [0, 2]].values
+# Data retrieval and preperation. Training Data
+yTrain = pd.read_csv("1. LinearClassificator And OneLayerPerceptron/DataSets/irisTrainDataSet.csv", header=None)
+xTrain = yTrain.iloc[0:75, [0, 2]].values
 plt.scatter(xTrain[:25, 0], xTrain[:25, 1], color='red')
 plt.scatter(xTrain[25:50, 0], xTrain[25:50, 1], color='blue')
 plt.scatter(xTrain[50:75, 0], xTrain[50:75, 1], color='yellow')
 plt.title('Изначальный разброс тренировочной выборки')
 plt.show()
-yTrain = yTrain.iloc[:50, 4].values
-yTrain = np.where(yTrain == 'Iris-setosa', -1, 1)
+yTrain = yTrain.iloc[0:75, 4].values
+yTrain = np.where(yTrain=='Iris-setosa', -1, 1)
 
 # Data retrieval and preperation. Prediction Data
-yPredict = pd.read_csv("DataSets/irisPredictDataSet.csv", header=None)
-xPredict = yPredict.iloc[:75, [0, 2]].values
+yPredict = pd.read_csv("1. LinearClassificator And OneLayerPerceptron/DataSets/irisPredictDataSet.csv", header=None)
+xPredict = yPredict.iloc[0:75, [0, 2]].values
 plt.scatter(xPredict[:25, 0], xPredict[:25, 1], color='red')
 plt.scatter(xPredict[25:50, 0], xPredict[25:50, 1], color='blue')
 plt.scatter(xPredict[50:75, 0], xPredict[50:75, 1], color='yellow')
 plt.title('Изначальный разброс тестовой выборки')
 plt.show()
-yPredict = yPredict.iloc[:50, 4].values
-print(yPredict)
-yPredict = np.where(yPredict == 'Iris-setosa', -1, 1)
+yPredict = yPredict.iloc[0:75, 4].values
+yPredict = np.where(yPredict=='Iris-setosa', -1, 1)
 
 # Model training and evaluation. Training Data
 Classifier = Perceptron(Learn_Rate=0.01, Iterations=50)

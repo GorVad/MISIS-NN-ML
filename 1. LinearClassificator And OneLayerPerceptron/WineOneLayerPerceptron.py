@@ -37,7 +37,7 @@ class Perceptron(object):
 
 
 # Data retrieval and preperation. Training Data
-yTrain = pd.read_csv("DataSets/wineTrainDataSet.csv", header=None)
+yTrain = pd.read_csv("1. LinearClassificator And OneLayerPerceptron/DataSets/wineTrainDataSet.csv", header=None)
 xTrain = yTrain.iloc[0:92, [7, 12]].values
 plt.scatter(xTrain[:35, 0], xTrain[:35, 1], color='red')
 plt.scatter(xTrain[35:69, 0], xTrain[35:69, 1], color='blue')
@@ -48,7 +48,7 @@ yTrain = yTrain.iloc[0:92, 0].values
 yTrain = np.where(yTrain==3, -1, 1)
 
 # Data retrieval and preperation. Prediction Data
-yPredict = pd.read_csv("DataSets/winePredictDataSet.csv", header=None)
+yPredict = pd.read_csv("1. LinearClassificator And OneLayerPerceptron/DataSets/winePredictDataSet.csv", header=None)
 xPredict = yPredict.iloc[0:86, [7, 12]].values
 plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='red')
 plt.scatter(xPredict[24:62, 0], xPredict[24:62, 1], color='blue')
