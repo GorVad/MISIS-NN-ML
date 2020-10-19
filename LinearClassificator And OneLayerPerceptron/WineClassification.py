@@ -56,14 +56,18 @@ plt.scatter(xTrain[:35, 0], xTrain[:35, 1], color='red')
 plt.scatter(xTrain[35:69, 0], xTrain[35:69, 1], color='blue')
 plt.scatter(xTrain[69:92, 0], xTrain[69:92, 1], color='green')
 plt.title('Изначальный разброс тренировочной выборки')
+plt.xlabel('Total phenols')
+plt.ylabel('Hue')
 plt.show()
 # Изначальный разброс тестовой выборки
 yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\winePredictDataSet.csv", header=None)
 xPredict = yPredict.iloc[0:86, [7, 12]].values
-plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='yellow')
+plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='blue')
 plt.scatter(xPredict[24:62, 0], xPredict[24:62, 1], color='green')
 plt.scatter(xPredict[62:86, 0], xPredict[62:86, 1], color='red')
 plt.title('Изначальный разброс тестовой выборки')
+plt.xlabel('Total phenols')
+plt.ylabel('Hue')
 plt.show()
 
 Classifier = Perceptron(Learn_Rate=0.01, Iterations=100)
@@ -71,7 +75,7 @@ logreg_clf = LogisticRegression()
 # Отображение классификации тренировочной выборки по однослойному перцептрону
 yTrain = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\wineTrainDataSet.csv", header=None)
 xTrain = yTrain.iloc[0:92, [7, 12]].values
-plt.scatter(xTrain[:35, 0], xTrain[:35, 1], color='yellow')
+plt.scatter(xTrain[:35, 0], xTrain[:35, 1], color='blue')
 plt.scatter(xTrain[35:69, 0], xTrain[35:69, 1], color='green')
 plt.scatter(xTrain[69:92, 0], xTrain[69:92, 1], color='red')
 yTrain = yTrain.iloc[0:92, 0].values
@@ -79,24 +83,28 @@ yTrain = np.where(yTrain==3, -1, 1)
 Classifier.fit(xTrain, yTrain)
 plot_decision_regions(xTrain, yTrain, classifier=Classifier)
 plt.title('Однослойный перцептрон. Тренировочная выборка')
+plt.xlabel('Total phenols')
+plt.ylabel('Hue')
 plt.show()
 
 # Отображение классификации тестовой выборки по однослойному перцептрону
 yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\winePredictDataSet.csv", header=None)
 xPredict = yPredict.iloc[0:86, [7, 12]].values
-plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='yellow')
+plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='blue')
 plt.scatter(xPredict[24:62, 0], xPredict[24:62, 1], color='green')
 plt.scatter(xPredict[62:86, 0], xPredict[62:86, 1], color='red')
 yPredict = yPredict.iloc[0:86, 0].values
 yPredict = np.where(yPredict==3, -1, 1)
 plot_decision_regions(xPredict, yPredict, classifier=Classifier)
 plt.title('Однослойный перцептрон. Тестовая выборка')
+plt.xlabel('Total phenols')
+plt.ylabel('Hue')
 plt.show()
 
 # Отображение классификации тренировочной выборки по линейному классификатору (логистическая регрессия)
 yTrain = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\wineTrainDataSet.csv", header=None)
 xTrain = yTrain.iloc[0:92, [7, 12]].values
-plt.scatter(xTrain[:35, 0], xTrain[:35, 1], color='yellow')
+plt.scatter(xTrain[:35, 0], xTrain[:35, 1], color='blue')
 plt.scatter(xTrain[35:69, 0], xTrain[35:69, 1], color='green')
 plt.scatter(xTrain[69:92, 0], xTrain[69:92, 1], color='red')
 yTrain = yTrain.iloc[0:92, 0].values
@@ -104,16 +112,20 @@ yTrain = np.where(yTrain==3, -1, 1)
 logreg_clf.fit(xTrain,yTrain)
 plot_decision_regions(xTrain, yTrain, classifier=logreg_clf)
 plt.title('Линейный классификатор. Тренировочная выборка')
+plt.xlabel('Total phenols')
+plt.ylabel('Hue')
 plt.show()
 
 # Отображение классификации тестовой выборки по линейному классификатору (логистическая регрессия)
 yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\winePredictDataSet.csv", header=None)
 xPredict = yPredict.iloc[0:86, [7, 12]].values
-plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='yellow')
+plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='blue')
 plt.scatter(xPredict[24:62, 0], xPredict[24:62, 1], color='green')
 plt.scatter(xPredict[62:86, 0], xPredict[62:86, 1], color='red')
 yPredict = yPredict.iloc[0:86, 0].values
 yPredict = np.where(yPredict==3, -1, 1)
 plot_decision_regions(xPredict, yPredict, classifier=logreg_clf)
 plt.title('Линейный классификатор. Тестовая выборка')
+plt.xlabel('Total phenols')
+plt.ylabel('Hue')
 plt.show()
