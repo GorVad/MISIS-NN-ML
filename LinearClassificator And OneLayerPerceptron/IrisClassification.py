@@ -60,11 +60,11 @@ plt.xlabel('sepal length in cm')
 plt.ylabel('petal length in cm')
 plt.show()
 # Изначальный разброс тестовой выборки
-yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\irisPredictDataSet.csv", header=None)
-xPredict = yPredict.iloc[0:75, [0, 2]].values
-plt.scatter(xPredict[:25, 0], xPredict[:25, 1], color='red')
-plt.scatter(xPredict[25:50, 0], xPredict[25:50, 1], color='blue')
-plt.scatter(xPredict[50:75, 0], xPredict[50:75, 1], color='green')
+yTest = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\irisTestDataSet.csv", header=None)
+xTest = yTest.iloc[0:75, [0, 2]].values
+plt.scatter(xTest[:25, 0], xTest[:25, 1], color='red')
+plt.scatter(xTest[25:50, 0], xTest[25:50, 1], color='blue')
+plt.scatter(xTest[50:75, 0], xTest[50:75, 1], color='green')
 plt.title('Изначальный разброс тестовой выборки')
 plt.xlabel('sepal length in cm')
 plt.ylabel('petal length in cm')
@@ -88,14 +88,14 @@ plt.ylabel('petal length in cm')
 plt.show()
 
 # Отображение классификации тестовой выборки по однослойному перцептрону
-yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\irisPredictDataSet.csv", header=None)
-xPredict = yPredict.iloc[0:75, [0, 2]].values
-plt.scatter(xPredict[:25, 0], xPredict[:25, 1], color='red')
-plt.scatter(xPredict[25:50, 0], xPredict[25:50, 1], color='blue')
-plt.scatter(xPredict[50:75, 0], xPredict[50:75, 1], color='green')
-yPredict = yPredict.iloc[0:75, 4].values
-yPredict = np.where(yPredict=='Iris-setosa', -1, 1)
-plot_decision_regions(xPredict, yPredict, classifier=Classifier)
+yTest = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\irisTestDataSet.csv", header=None)
+xTest = yTest.iloc[0:75, [0, 2]].values
+plt.scatter(xTest[:25, 0], xTest[:25, 1], color='red')
+plt.scatter(xTest[25:50, 0], xTest[25:50, 1], color='blue')
+plt.scatter(xTest[50:75, 0], xTest[50:75, 1], color='green')
+yTest = yTest.iloc[0:75, 4].values
+yTest = np.where(yTest=='Iris-setosa', -1, 1)
+plot_decision_regions(xTest, yTest, classifier=Classifier)
 plt.title('Однослойный перцептрон. Тестовая выборка')
 plt.xlabel('sepal length in cm')
 plt.ylabel('petal length in cm')
@@ -117,14 +117,14 @@ plt.ylabel('petal length in cm')
 plt.show()
 
 # Отображение классификации тестовой выборки по линейному классификатору (логистическая регрессия)
-yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\irisPredictDataSet.csv", header=None)
-xPredict = yPredict.iloc[0:75, [0, 2]].values
-plt.scatter(xPredict[:25, 0], xPredict[:25, 1], color='red')
-plt.scatter(xPredict[25:50, 0], xPredict[25:50, 1], color='blue')
-plt.scatter(xPredict[50:75, 0], xPredict[50:75, 1], color='green')
-yPredict = yPredict.iloc[0:75, 4].values
-yPredict = np.where(yPredict=='Iris-setosa', -1, 1)
-plot_decision_regions(xPredict, yPredict, classifier=logreg_clf)
+yTest = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\irisTestDataSet.csv", header=None)
+xTest = yTest.iloc[0:75, [0, 2]].values
+plt.scatter(xTest[:25, 0], xTest[:25, 1], color='red')
+plt.scatter(xTest[25:50, 0], xTest[25:50, 1], color='blue')
+plt.scatter(xTest[50:75, 0], xTest[50:75, 1], color='green')
+yTest = yTest.iloc[0:75, 4].values
+yTest = np.where(yTest=='Iris-setosa', -1, 1)
+plot_decision_regions(xTest, yTest, classifier=logreg_clf)
 plt.title('Линейный классификатор. Тестовая выборка')
 plt.xlabel('sepal length in cm')
 plt.ylabel('petal length in cm')

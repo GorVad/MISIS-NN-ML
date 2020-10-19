@@ -60,11 +60,11 @@ plt.xlabel('Total phenols')
 plt.ylabel('Hue')
 plt.show()
 # Изначальный разброс тестовой выборки
-yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\winePredictDataSet.csv", header=None)
-xPredict = yPredict.iloc[0:86, [7, 12]].values
-plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='blue')
-plt.scatter(xPredict[24:62, 0], xPredict[24:62, 1], color='green')
-plt.scatter(xPredict[62:86, 0], xPredict[62:86, 1], color='red')
+yTest = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\wineTestDataSet.csv", header=None)
+xTest = yTest.iloc[0:86, [7, 12]].values
+plt.scatter(xTest[:24, 0], xTest[:24, 1], color='blue')
+plt.scatter(xTest[24:62, 0], xTest[24:62, 1], color='green')
+plt.scatter(xTest[62:86, 0], xTest[62:86, 1], color='red')
 plt.title('Изначальный разброс тестовой выборки')
 plt.xlabel('Total phenols')
 plt.ylabel('Hue')
@@ -88,14 +88,14 @@ plt.ylabel('Hue')
 plt.show()
 
 # Отображение классификации тестовой выборки по однослойному перцептрону
-yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\winePredictDataSet.csv", header=None)
-xPredict = yPredict.iloc[0:86, [7, 12]].values
-plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='blue')
-plt.scatter(xPredict[24:62, 0], xPredict[24:62, 1], color='green')
-plt.scatter(xPredict[62:86, 0], xPredict[62:86, 1], color='red')
-yPredict = yPredict.iloc[0:86, 0].values
-yPredict = np.where(yPredict==3, -1, 1)
-plot_decision_regions(xPredict, yPredict, classifier=Classifier)
+yTest = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\wineTestDataSet.csv", header=None)
+xTest = yTest.iloc[0:86, [7, 12]].values
+plt.scatter(xTest[:24, 0], xTest[:24, 1], color='blue')
+plt.scatter(xTest[24:62, 0], xTest[24:62, 1], color='green')
+plt.scatter(xTest[62:86, 0], xTest[62:86, 1], color='red')
+yTest = yTest.iloc[0:86, 0].values
+yTest = np.where(yTest==3, -1, 1)
+plot_decision_regions(xTest, yTest, classifier=Classifier)
 plt.title('Однослойный перцептрон. Тестовая выборка')
 plt.xlabel('Total phenols')
 plt.ylabel('Hue')
@@ -117,14 +117,14 @@ plt.ylabel('Hue')
 plt.show()
 
 # Отображение классификации тестовой выборки по линейному классификатору (логистическая регрессия)
-yPredict = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\winePredictDataSet.csv", header=None)
-xPredict = yPredict.iloc[0:86, [7, 12]].values
-plt.scatter(xPredict[:24, 0], xPredict[:24, 1], color='blue')
-plt.scatter(xPredict[24:62, 0], xPredict[24:62, 1], color='green')
-plt.scatter(xPredict[62:86, 0], xPredict[62:86, 1], color='red')
-yPredict = yPredict.iloc[0:86, 0].values
-yPredict = np.where(yPredict==3, -1, 1)
-plot_decision_regions(xPredict, yPredict, classifier=logreg_clf)
+yTest = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\wineTestDataSet.csv", header=None)
+xTest = yTest.iloc[0:86, [7, 12]].values
+plt.scatter(xTest[:24, 0], xTest[:24, 1], color='blue')
+plt.scatter(xTest[24:62, 0], xTest[24:62, 1], color='green')
+plt.scatter(xTest[62:86, 0], xTest[62:86, 1], color='red')
+yTest = yTest.iloc[0:86, 0].values
+yTest = np.where(yTest==3, -1, 1)
+plot_decision_regions(xTest, yTest, classifier=logreg_clf)
 plt.title('Линейный классификатор. Тестовая выборка')
 plt.xlabel('Total phenols')
 plt.ylabel('Hue')
