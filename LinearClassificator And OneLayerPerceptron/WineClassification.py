@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import pandas as pd
 from matplotlib.colors import ListedColormap
 from sklearn.linear_model import LogisticRegression
+from sklearn import metrics
 
 
 class Perceptron(object):
@@ -116,6 +117,12 @@ plt.xlabel('Total phenols')
 plt.ylabel('Hue')
 plt.show()
 
+# Рассчет метрик качества для Однослойного перцептрона
+print('Accuracy for Iris Single layer Perceptron:',metrics.accuracy_score(yTest, Classifier.predict(xTest)))
+print('Precision for Iris Single layer Perceptron:',metrics.precision_score(yTest, Classifier.predict(xTest)))
+print('Recall for Iris Single layer Perceptron:',metrics.recall_score(yTest, Classifier.predict(xTest)))
+print('F1-measure for Iris Single layer Perceptron:',metrics.f1_score(yTest, Classifier.predict(xTest)))
+
 # Отображение классификации тестовой выборки по линейному классификатору (логистическая регрессия)
 yTest = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\wineTestDataSet.csv", header=None)
 xTest = yTest.iloc[0:86, [7, 12]].values
@@ -129,3 +136,9 @@ plt.title('Линейный классификатор. Тестовая выб�
 plt.xlabel('Total phenols')
 plt.ylabel('Hue')
 plt.show()
+
+# Рассчет метрик качества для Линейного классификатора
+print('Accuracy for Iris Linear Classification :',metrics.accuracy_score(yTest, logreg_clf.predict(xTest)))
+print('Precision for Iris Linear Classification:',metrics.precision_score(yTest, logreg_clf.predict(xTest)))
+print('Recall for Iris Linear Classification:',metrics.recall_score(yTest, logreg_clf.predict(xTest)))
+print('F1-measure for Iris Linear Classification:',metrics.f1_score(yTest, logreg_clf.predict(xTest)))
