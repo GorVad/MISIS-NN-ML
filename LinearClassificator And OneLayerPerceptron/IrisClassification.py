@@ -3,36 +3,9 @@ from matplotlib import pyplot as plt
 import pandas as pd
 from matplotlib.colors import ListedColormap
 from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Perceptron
 from sklearn import metrics
-
-
-class Perceptron(object):
-    def __init__(self, Learn_Rate=0.5, Iterations=10):
-        self.learn_rate = Learn_Rate
-        self.Iterations = Iterations
-        self.errors = []
-        self.weights = np.zeros(1 + xTrain.shape[1])
-
-    # Defining fit method for model training.
-    def fit(self, x, y):
-        self.weights = np.zeros(1 + x.shape[1])
-        for i in range(self.Iterations):
-            error = 0
-            for xi, target in zip(x, y):
-                update = self.learn_rate * (target - self.predict(xi))
-                self.weights[1:] += update * xi
-                self.weights[0] += update
-                error += int(update != 0)
-            self.errors.append(error)
-        return self
-
-    # Изменение весов
-    def net_input(self, x):
-        return np.dot(x, self.weights[1:]) + self.weights[0]
-
-    # Прогнозирование значения
-    def predict(self, x):
-        return np.where(self.net_input(x) >= 0.0, 1, -1)
+from sklearn.neural_network import MLPClassifier
 
 
 def plot_decision_regions(X, y, classifier, resolution=0.02):
@@ -71,7 +44,7 @@ plt.xlabel('sepal length in cm')
 plt.ylabel('petal length in cm')
 plt.show()
 
-Classifier = Perceptron(Learn_Rate=0.01, Iterations=100)
+Classifier = Perceptron()
 logreg_clf = LogisticRegression()
 # Отображение классификации тренировочной выборки по однослойному перцептрону
 yTrain = pd.read_csv("D:\Development\PyCharm\LinearClassification\LinearClassificator And OneLayerPerceptron\DataSets\irisTrainDataSet.csv", header=None)
@@ -81,6 +54,7 @@ plt.scatter(xTrain[25:50, 0], xTrain[25:50, 1], color='blue')
 plt.scatter(xTrain[50:75, 0], xTrain[50:75, 1], color='green')
 yTrain = yTrain.iloc[0:75, 4].values
 yTrain = np.where(yTrain=='Iris-setosa', -1, 1)
+Classifier.fit(xTrain, yTrain)
 Classifier.fit(xTrain, yTrain)
 plot_decision_regions(xTrain, yTrain, classifier=Classifier)
 plt.title('Однослойный перцептрон. Тренировочная выборка')
