@@ -7,7 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 irisDataSet = pd.read_csv("D:\PyCharm\MISIS-NN-ML\LinearClassificator And OneLayerPerceptron\DataSets\iris.csv", header=None)
-x = irisDataSet.iloc[:, 0:2].values
+x = irisDataSet.iloc[:, 1:3].values
 y = irisDataSet.iloc[:, 4].values
 X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=42)
 
