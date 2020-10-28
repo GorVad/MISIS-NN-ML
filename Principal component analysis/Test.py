@@ -19,24 +19,33 @@ plt.show()
 df = pd.DataFrame(newAuditDataSet).dropna()
 corrM = df.corr()
 np.fill_diagonal(corrM.values, np.nan)
-order_bottom = np.argsort(corrM.values, axis=1)[:, :3]
+order_bottom = np.argsort(corrM.values, axis=1)[:, :1]
 result_bottom = pd.DataFrame(
     corrM.columns[order_bottom],
-    columns=['Last1','Last2', 'Last3'],
+    columns=['Lowest cor'],
     index=corrM.index
 )
 for x in result_bottom.columns:
     result_bottom[x+"_Val"] = corrM.lookup(corrM.index, result_bottom[x])
 # print(result_bottom)
 
-# Выдергивание атрибутов со слабой корреляции из общего датасета
-pcaAuditDataSet = auditDataSet.iloc[:, [6, 2, 12, 14, 16, 17, 20, 23]]
-nAuditDataSet = newAuditDataSet.drop(['PROB','RiSk_E', 'Risk_F', 'PARA_A', 'CONTROL_RISK', 'Money_Value', 'Score_B', 'Risk_D'], axis=1)
+# Создание DataFrame для PCA - 1. Отдельный из атрибутов со слабой корреляцией и 2. Изначальный без слабых
+nAuditDataSet = newAuditDataSet
+pcaAuditDataSet = newAuditDataSet
+ilocColumn = result_bottom.iloc[:, 0]
+for i in pcaAuditDataSet.columns:
+    pcaAuditDataSet = pcaAuditDataSet.drop([i], axis=1)
+for i in ilocColumn:
+    try:
+        # print(pcaAuditDataSet.iloc[:, [pcaAuditDataSet.columns.get_loc(i)]])
+        nAuditDataSet = nAuditDataSet.drop([i], axis=1)
+        pcaAuditDataSet = pcaAuditDataSet.join(newAuditDataSet.iloc[:, [newAuditDataSet.columns.get_loc(i)]])
+    except Exception: pass
 # print(nAuditDataSet)
+# print(pcaAuditDataSet)
 
 # Реализация PCA и присоединение получившихся столбцов к изначальному датасету
 pcaAuditDataSet = pd.DataFrame(pcaAuditDataSet).dropna()
-
 pca = decomposition.PCA(n_components=3)
 pcaAuditDataSet_centered = pcaAuditDataSet - pcaAuditDataSet.mean(axis=0)
 pcaAuditDataSet_transformed = pca.fit_transform(pcaAuditDataSet_centered)
@@ -62,4 +71,4 @@ result_bottom = pd.DataFrame(
 )
 for x in result_bottom.columns:
     result_bottom[x+"_Val"] = corrM.lookup(corrM.index, result_bottom[x])
-print(result_bottom)
+# print(result_bottom)
