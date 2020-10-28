@@ -30,22 +30,36 @@ for x in result_bottom.columns:
 # print(result_bottom)
 
 # Выдергивание атрибутов со слабой корреляции из общего датасета
-pcaAuditDataSet = auditDataSet.iloc[:, [16,17, 20, 2, 23, 12, 6, 14]]
+pcaAuditDataSet = auditDataSet.iloc[:, [6, 2, 12, 14, 16, 17, 20, 23]]
 nAuditDataSet = newAuditDataSet.drop(['PROB','RiSk_E', 'Risk_F', 'PARA_A', 'CONTROL_RISK', 'Money_Value', 'Score_B', 'Risk_D'], axis=1)
 # print(nAuditDataSet)
 
 # Реализация PCA и присоединение получившихся столбцов к изначальному датасету
-pcaAuditDataSet = pd.DataFrame(newAuditDataSet).dropna()
+pcaAuditDataSet = pd.DataFrame(pcaAuditDataSet).dropna()
+
 pca = decomposition.PCA(n_components=3)
 pcaAuditDataSet_centered = pcaAuditDataSet - pcaAuditDataSet.mean(axis=0)
 pcaAuditDataSet_transformed = pca.fit_transform(pcaAuditDataSet_centered)
 principalDf = pd.DataFrame(data = pcaAuditDataSet_transformed, columns=['1', '2', '3'])
 # print(principalDf)
-newAuditDataSet = newAuditDataSet.join(principalDf)
-# print(newAuditDataSet)
+nAuditDataSet = nAuditDataSet.join(principalDf)
+# print(nAuditDataSet)
 
-corrMatrix = plt.matshow(newAuditDataSet.corr())
+corrMatrix = plt.matshow(nAuditDataSet.corr())
 cb = plt.colorbar()
 cb.ax.tick_params(labelsize=14)
 plt.title('Матрица корреляции датасета Audit после использования PCA')
 plt.show()
+
+df = pd.DataFrame(nAuditDataSet).dropna()
+corrM = df.corr()
+np.fill_diagonal(corrM.values, np.nan)
+order_bottom = np.argsort(corrM.values, axis=1)[:, :3]
+result_bottom = pd.DataFrame(
+    corrM.columns[order_bottom],
+    columns=['Last1','Last2', 'Last3'],
+    index=corrM.index
+)
+for x in result_bottom.columns:
+    result_bottom[x+"_Val"] = corrM.lookup(corrM.index, result_bottom[x])
+print(result_bottom)
