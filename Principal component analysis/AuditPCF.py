@@ -3,12 +3,14 @@ import numpy as np
 from sklearn import decomposition
 from matplotlib.pyplot import figure, show
 from matplotlib.ticker import MaxNLocator
+import operator
 import pandas as pd
 pd.set_option('precision', 3)
 pd.set_option('display.max_columns', 100)
 
 
-def variance(df):
+def variance(df, bar_dictionary=None):
+    barDictionary = {}
     # Общее среднее значение
     totalMean = 0
     totalSum = 0
@@ -27,6 +29,7 @@ def variance(df):
     totalOutgroupp = 0
     totalIngroupp = 0
     for i in df.columns:
+
         # Внутригрупповая дисперсия
         totalIngroupp = 0
         mean = 0
@@ -47,11 +50,19 @@ def variance(df):
 
         # Межгрупповая дисперсия
         totalOutgroupp = totalOutgroupp + np.power(mean - totalMean, 2) * count / totalCount
+        barDictionary[i] = totalIngroupp
 
     print("Остаточная дисперсия: ", totalResVar)
     print("Межгрупповая дисперсия: ", totalOutgroupp)
     # Общая дисперсия
     print("Общая дисперсия: ", totalResVar + totalOutgroupp)
+
+    sottedBarDictionary = {k: v for k, v in sorted(barDictionary.items(), key=lambda item: item[1], reverse=True)}
+    keys = sottedBarDictionary.keys()
+    values = sottedBarDictionary.values()
+    plt.bar(keys, values)
+
+
 
 # Получение датасета и построение изначальной матрицы корреляции
 auditDataSet = pd.read_csv(r"D:\PyCharm\MISIS-NN-ML\Principal component analysis\Datasets\audit.csv")
@@ -116,7 +127,7 @@ plt.show()
 
 #Матрица факторного анализа
 dfCorrAuditMainComp = pd.DataFrame(corrAuditDataSet.iloc[:-1, -mainCompType]).dropna()
-print(dfCorrAuditMainComp)
+# print(dfCorrAuditMainComp)
 variance(dfCorrAuditMainComp)
 
 
