@@ -12,6 +12,7 @@ def variance(df):
     # Общее среднее значение
     totalMean = 0
     totalSum = 0
+    totalCount = 0
     for i in df.columns:
         mean = 0
         count = 0
@@ -19,6 +20,7 @@ def variance(df):
             mean = mean + (count * df[i][m]) / np.sum(df[i])
             count = count + 1
         totalMean = totalMean + mean
+        totalCount = totalCount + count
         totalSum = totalSum = np.sum(df[i])
 
     totalResVar = 0
@@ -35,15 +37,16 @@ def variance(df):
 
         count = 0
         for j in df[i].index:
-            totalIngroupp = totalIngroupp + np.power(count - mean, 2) * df[i][j] / np.sum(df[i])
+            totalIngroupp = totalIngroupp + np.power(count - mean, 2)
             count = count + 1
+        totalIngroupp = totalIngroupp / count
         print("Внутригрупповая дисперсия группы ", i, ": ", totalIngroupp)
 
         # Остаточная дисперсия
         totalResVar = totalResVar + (totalIngroupp * np.sum(df[i])) / totalSum
 
         # Межгрупповая дисперсия
-        totalOutgroupp = totalOutgroupp + np.power(mean - totalMean, 2) * np.sum(df[i]) / totalSum
+        totalOutgroupp = totalOutgroupp + np.power(mean - totalMean, 2) * count / totalCount
 
     print("Остаточная дисперсия: ", totalResVar)
     print("Межгрупповая дисперсия: ", totalOutgroupp)

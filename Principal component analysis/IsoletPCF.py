@@ -11,13 +11,15 @@ def variance(df):
     # Общее среднее значение
     totalMean = 0
     totalSum = 0
+    totalCount = 0
     for i in df.columns:
         mean = 0
         count = 0
         for m in df[i].index:
             mean = mean + (count * df[i][m]) / np.sum(df[i])
-            count = count+1
+            count = count + 1
         totalMean = totalMean + mean
+        totalCount = totalCount + count
         totalSum = totalSum = np.sum(df[i])
 
     totalResVar = 0
@@ -29,20 +31,21 @@ def variance(df):
         mean = 0
         count = 0
         for m in df[i].index:
-            mean = mean+(count*df[i][m])/np.sum(df[i])
-            count = count+1
+            mean = mean + (count * df[i][m]) / np.sum(df[i])
+            count = count + 1
 
         count = 0
         for j in df[i].index:
-            totalIngroupp = totalIngroupp + np.power(count - mean, 2) * df[i][j] / np.sum(df[i])
-            count = count+1
+            totalIngroupp = totalIngroupp + np.power(count - mean, 2)
+            count = count + 1
+        totalIngroupp = totalIngroupp / count
         print("Внутригрупповая дисперсия группы ", i, ": ", totalIngroupp)
 
         # Остаточная дисперсия
         totalResVar = totalResVar + (totalIngroupp * np.sum(df[i])) / totalSum
 
         # Межгрупповая дисперсия
-        totalOutgroupp = totalOutgroupp + np.power(mean - totalMean, 2) * np.sum(df[i]) / totalSum
+        totalOutgroupp = totalOutgroupp + np.power(mean - totalMean, 2) * count / totalCount
 
     print("Остаточная дисперсия: ", totalResVar)
     print("Межгрупповая дисперсия: ", totalOutgroupp)
@@ -91,7 +94,7 @@ pcaAuditDataSet = pd.DataFrame(pcaAuditDataSet).dropna()
 pca = decomposition.PCA()
 pcaAuditDataSet_transformed = pca.fit(pcaAuditDataSet).transform(pcaAuditDataSet)
 
-mainCompType = 4
+mainCompType = 20
 pca1 = decomposition.PCA(mainCompType)
 pcaAuditDataSet_transformed = pca1.fit(pcaAuditDataSet).transform(pcaAuditDataSet)
 
