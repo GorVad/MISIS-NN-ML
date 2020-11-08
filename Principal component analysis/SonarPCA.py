@@ -61,15 +61,15 @@ def variance(df):
     plt.bar(keys, values)
 
 # Получение датасета и построение изначальной матрицы корреляции
-auditDataSet = pd.read_csv(r"D:\PyCharm\MISIS-NN-ML\Principal component analysis\Datasets\sonar.csv", header=None)
+SonarDataSet = pd.read_csv(r"D:\PyCharm\MISIS-NN-ML\Principal component analysis\Datasets\sonar.csv", header=None)
 
-corrMatrix = plt.matshow(auditDataSet.corr())
+corrMatrix = plt.matshow(SonarDataSet.corr())
 cb = plt.colorbar()
 cb.ax.tick_params(labelsize=14)
-plt.title('Первоначальная матрица корреляции датасета Audit')
+plt.title('Первоначальная матрица корреляции датасета Sonar')
 plt.show()
 # Получение списка матрицы корреляции для выясления элементов со слабейшей корреляцией
-df = pd.DataFrame(auditDataSet).dropna()
+df = pd.DataFrame(SonarDataSet).dropna()
 corrM = df.corr()
 np.fill_diagonal(corrM.values, np.nan)
 order_bottom = np.argsort(corrM.values, axis=1)[:, :1]
@@ -83,49 +83,58 @@ for x in result_bottom.columns:
 # print(result_bottom)
 
 # Создание DataFrame для PCA - 1. Отдельный из атрибутов со слабой корреляцией и 2. Изначальный без слабых
-nAuditDataSet = auditDataSet
-pcaAuditDataSet = auditDataSet
+nSonarDataSet = SonarDataSet
+pcaSonarDataSet = SonarDataSet
 ilocColumn = result_bottom.iloc[:, 0]
-for i in pcaAuditDataSet.columns:
-    pcaAuditDataSet = pcaAuditDataSet.drop([i], axis=1)
+for i in pcaSonarDataSet.columns:
+    pcaSonarDataSet = pcaSonarDataSet.drop([i], axis=1)
 for i in ilocColumn:
     try:
-        # print(pcaAuditDataSet.iloc[:, [pcaAuditDataSet.columns.get_loc(i)]])
-        nAuditDataSet = nAuditDataSet.drop([i], axis=1)
-        pcaAuditDataSet = pcaAuditDataSet.join(auditDataSet.iloc[:, [auditDataSet.columns.get_loc(i)]])
+        # print(pcaSonarDataSet.iloc[:, [pcaSonarDataSet.columns.get_loc(i)]])
+        nSonarDataSet = nSonarDataSet.drop([i], axis=1)
+        pcaSonarDataSet = pcaSonarDataSet.join(SonarDataSet.iloc[:, [SonarDataSet.columns.get_loc(i)]])
     except Exception: pass
-# print(nAuditDataSet)
-# print(pcaAuditDataSet)
+# print(nSonarDataSet)
+print(pcaSonarDataSet)
 
 # Реализация PCA и присоединение получившихся столбцов к изначальному датасету
-pcaAuditDataSet = pd.DataFrame(pcaAuditDataSet).dropna()
+pcaSonarDataSet = pd.DataFrame(pcaSonarDataSet).dropna()
 pca = decomposition.PCA()
-pcaAuditDataSet_transformed = pca.fit(pcaAuditDataSet).transform(pcaAuditDataSet)
+pcaSonarDataSet_transformed = pca.fit(pcaSonarDataSet).transform(pcaSonarDataSet)
 
-mainCompType = 4
+# # По критерию Кайзера
+# mainCompType = --
+# По критерию сломанной трости
+# mainCompType = 10
+# # По критерию каменистой осыпи
+mainCompType = 12
 pca1 = decomposition.PCA(mainCompType)
-pcaAuditDataSet_transformed = pca1.fit(pcaAuditDataSet).transform(pcaAuditDataSet)
+pcaSonarDataSet_transformed = pca1.fit(pcaSonarDataSet).transform(pcaSonarDataSet)
 
-principalDf = pd.DataFrame(data = pcaAuditDataSet_transformed).add_prefix('MC_')
-nAuditDataSet = nAuditDataSet.join(principalDf)
+principalDf = pd.DataFrame(data = pcaSonarDataSet_transformed).add_prefix('MC_')
+nSonarDataSet = nSonarDataSet.join(principalDf)
 # print(principalDf)
-# print(nAuditDataSet)
+# print(nSonarDataSet)
 
 #Матрица измененного первоначального датасета
-corrAuditDataSet = nAuditDataSet.corr()
-# print(corrAuditDataSet)
-corrMatrix = plt.matshow(corrAuditDataSet)
+corrSonarDataSet = nSonarDataSet.corr()
+# print(corrSonarDataSet)
+corrMatrix = plt.matshow(corrSonarDataSet)
 cb = plt.colorbar()
 cb.ax.tick_params(labelsize=14)
-plt.title('Матрица корреляции датасета Audit после использования PCA')
+plt.title('Матрица корреляции датасета Sonar после использования PCA')
 plt.show()
 
 #Матрица факторного анализа
-dfCorrAuditMainComp = pd.DataFrame(corrAuditDataSet.iloc[:-1, -mainCompType:]).dropna()
-# print(dfCorrAuditMainComp)
-variance(dfCorrAuditMainComp)
+dfCorrSonarMainComp = pd.DataFrame(corrSonarDataSet.iloc[:-1, -mainCompType:]).dropna()
+# print(dfCorrSonarMainComp)
+variance(dfCorrSonarMainComp)
 
-
+# Анализ остатков
+reconstruct = pca1.inverse_transform(pcaSonarDataSet_transformed)
+residual=pcaSonarDataSet-reconstruct
+print(residual)
+print("ERV:", sum(pca1.explained_variance_ratio_))
 
 def scree_plot():
     ax = figure().gca()

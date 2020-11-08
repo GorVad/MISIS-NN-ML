@@ -107,6 +107,11 @@ pcaAuditDataSet = pd.DataFrame(pcaAuditDataSet).dropna()
 pca = decomposition.PCA()
 pcaAuditDataSet_transformed = pca.fit(pcaAuditDataSet).transform(pcaAuditDataSet)
 
+# По критерию Кайзера
+mainCompType = 1
+# По критерию сломанной трости
+mainCompType = 1
+# По критерию каменистой осыпи
 mainCompType = 1
 pca1 = decomposition.PCA(mainCompType)
 pcaAuditDataSet_transformed = pca1.fit(pcaAuditDataSet).transform(pcaAuditDataSet)
@@ -129,6 +134,12 @@ plt.show()
 dfCorrAuditMainComp = pd.DataFrame(corrAuditDataSet.iloc[:-1, -mainCompType]).dropna()
 # print(dfCorrAuditMainComp)
 variance(dfCorrAuditMainComp)
+
+# Анализ остатков
+reconstruct = pca1.inverse_transform(pcaAuditDataSet_transformed)
+residual=pcaAuditDataSet-reconstruct
+print(residual)
+print("ERV:", sum(pca1.explained_variance_ratio_))
 
 
 

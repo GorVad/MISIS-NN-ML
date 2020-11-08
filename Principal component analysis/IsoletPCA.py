@@ -4,7 +4,7 @@ from sklearn import decomposition
 from matplotlib.pyplot import figure, show
 from matplotlib.ticker import MaxNLocator
 import pandas as pd
-pd.set_option('display.max_columns', 100)
+pd.set_option('display.max_columns', 10)
 
 
 def variance(df):
@@ -61,15 +61,15 @@ def variance(df):
     plt.bar(keys, values)
 
 # Получение датасета и построение изначальной матрицы корреляции
-auditDataSet = pd.read_csv(r"D:\PyCharm\MISIS-NN-ML\Principal component analysis\Datasets\isolet.csv", header=None)
+IsoletDataSet = pd.read_csv(r"D:\PyCharm\MISIS-NN-ML\Principal component analysis\Datasets\isolet.csv", header=None)
 
-corrMatrix = plt.matshow(auditDataSet.corr())
+corrMatrix = plt.matshow(IsoletDataSet.corr())
 cb = plt.colorbar()
 cb.ax.tick_params(labelsize=14)
-plt.title('Первоначальная матрица корреляции датасета Audit')
+plt.title('Первоначальная матрица корреляции датасета Isolet')
 plt.show()
 # Получение списка матрицы корреляции для выясления элементов со слабейшей корреляцией
-df = pd.DataFrame(auditDataSet).dropna()
+df = pd.DataFrame(IsoletDataSet).dropna()
 corrM = df.corr()
 np.fill_diagonal(corrM.values, np.nan)
 order_bottom = np.argsort(corrM.values, axis=1)[:, :1]
@@ -83,49 +83,59 @@ for x in result_bottom.columns:
 # print(result_bottom)
 
 # Создание DataFrame для PCA - 1. Отдельный из атрибутов со слабой корреляцией и 2. Изначальный без слабых
-nAuditDataSet = auditDataSet
-pcaAuditDataSet = auditDataSet
+nIsoletDataSet = IsoletDataSet
+pcaIsoletDataSet = IsoletDataSet
 ilocColumn = result_bottom.iloc[:, 0]
-for i in pcaAuditDataSet.columns:
-    pcaAuditDataSet = pcaAuditDataSet.drop([i], axis=1)
+for i in pcaIsoletDataSet.columns:
+    pcaIsoletDataSet = pcaIsoletDataSet.drop([i], axis=1)
 for i in ilocColumn:
     try:
-        # print(pcaAuditDataSet.iloc[:, [pcaAuditDataSet.columns.get_loc(i)]])
-        nAuditDataSet = nAuditDataSet.drop([i], axis=1)
-        pcaAuditDataSet = pcaAuditDataSet.join(auditDataSet.iloc[:, [auditDataSet.columns.get_loc(i)]])
+        # print(pcaIsoletDataSet.iloc[:, [pcaIsoletDataSet.columns.get_loc(i)]])
+        nIsoletDataSet = nIsoletDataSet.drop([i], axis=1)
+        pcaIsoletDataSet = pcaIsoletDataSet.join(IsoletDataSet.iloc[:, [IsoletDataSet.columns.get_loc(i)]])
     except Exception: pass
-# print(nAuditDataSet)
-# print(pcaAuditDataSet)
+# print(nIsoletDataSet)
+# print(pcaIsoletDataSet)
 
 # Реализация PCA и присоединение получившихся столбцов к изначальному датасету
-pcaAuditDataSet = pd.DataFrame(pcaAuditDataSet).dropna()
+pcaIsoletDataSet = pd.DataFrame(pcaIsoletDataSet).dropna()
 pca = decomposition.PCA()
-pcaAuditDataSet_transformed = pca.fit(pcaAuditDataSet).transform(pcaAuditDataSet)
+pcaIsoletDataSet_transformed = pca.fit(pcaIsoletDataSet).transform(pcaIsoletDataSet)
 
-mainCompType = 20
+# # По критерию Кайзера
+mainCompType = 21
+# По критерию сломанной трости
+# mainCompType = 15
+# # По критерию каменистой осыпи
+# mainCompType = 12
+
 pca1 = decomposition.PCA(mainCompType)
-pcaAuditDataSet_transformed = pca1.fit(pcaAuditDataSet).transform(pcaAuditDataSet)
+pcaIsoletDataSet_transformed = pca1.fit(pcaIsoletDataSet).transform(pcaIsoletDataSet)
 
-principalDf = pd.DataFrame(data = pcaAuditDataSet_transformed).add_prefix('MC_')
-nAuditDataSet = nAuditDataSet.join(principalDf)
+principalDf = pd.DataFrame(data = pcaIsoletDataSet_transformed).add_prefix('MC_')
+nIsoletDataSet = nIsoletDataSet.join(principalDf)
 # print(principalDf)
-# print(nAuditDataSet)
+# print(nIsoletDataSet)
 
 #Матрица измененного первоначального датасета
-corrAuditDataSet = nAuditDataSet.corr()
-# print(corrAuditDataSet)
-corrMatrix = plt.matshow(corrAuditDataSet)
+corrIsoletDataSet = nIsoletDataSet.corr()
+# print(corrIsoletDataSet)
+corrMatrix = plt.matshow(corrIsoletDataSet)
 cb = plt.colorbar()
 cb.ax.tick_params(labelsize=14)
-plt.title('Матрица корреляции датасета Audit после использования PCA')
+plt.title('Матрица корреляции датасета Isolet после использования PCA')
 plt.show()
 
 #Матрица факторного анализа
-dfCorrAuditMainComp = pd.DataFrame(corrAuditDataSet.iloc[:-1, -mainCompType:]).dropna()
-# print(dfCorrAuditMainComp)
-variance(dfCorrAuditMainComp)
+dfCorrIsoletMainComp = pd.DataFrame(corrIsoletDataSet.iloc[:-1, -mainCompType:]).dropna()
+print(dfCorrIsoletMainComp)
+variance(dfCorrIsoletMainComp)
 
-
+# Анализ остатков
+reconstruct = pca1.inverse_transform(pcaIsoletDataSet_transformed)
+residual=pcaIsoletDataSet-reconstruct
+print(residual)
+print("ERV:", sum(pca1.explained_variance_ratio_))
 
 def scree_plot():
     ax = figure().gca()
