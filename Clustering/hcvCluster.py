@@ -61,7 +61,7 @@ print(completeness_score(YhcvDataSet, yminiKM))
 print(v_measure_score(YhcvDataSet, yminiKM))
 
 # AgglomerativeClustering - Иерархический агломеративный метод
-acSingleEUC = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='single', )
+acSingleEUC = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='ward')
 yACSingleEUC = acSingleEUC.fit_predict(X = pcaXhcvDataSet_transformed)
 clusterVisualize(yACSingleEUC, pcaXhcvDataSet_transformed, acSingleEUC)
 print(homogeneity_completeness_v_measure(YhcvDataSet, yACSingleEUC))
@@ -69,7 +69,7 @@ print(homogeneity_score(YhcvDataSet, yACSingleEUC))
 print(completeness_score(YhcvDataSet, yACSingleEUC))
 print(v_measure_score(YhcvDataSet, yACSingleEUC))
 
-acSingleMAN = AgglomerativeClustering(n_clusters=5, affinity='manhattan', linkage='single')
+acSingleMAN = AgglomerativeClustering(n_clusters=5, affinity='manhattan', linkage='complete')
 yACSingleMAN = acSingleMAN.fit_predict(X = pcaXhcvDataSet_transformed)
 clusterVisualize(yACSingleMAN, pcaXhcvDataSet_transformed, acSingleMAN)
 print(homogeneity_completeness_v_measure(YhcvDataSet, yACSingleEUC))
