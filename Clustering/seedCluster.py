@@ -1,5 +1,5 @@
 from sklearn.cluster import KMeans, AgglomerativeClustering, MiniBatchKMeans
-from sklearn.metrics import homogeneity_completeness_v_measure, homogeneity_score, completeness_score, v_measure_score
+from sklearn.metrics import homogeneity_completeness_v_measure, mutual_info_score
 from sklearn_extra.cluster import KMedoids
 from sklearn import decomposition
 import pandas as pd
@@ -47,40 +47,30 @@ km = KMeans(n_clusters=3)
 yKM = km.fit_predict(pcaXseedDataSet_transformed)
 clusterVisualize(yKM, pcaXseedDataSet_transformed, km)
 print(homogeneity_completeness_v_measure(YseedDataSet, yKM))
-print(homogeneity_score(YseedDataSet, yKM))
-print(completeness_score(YseedDataSet, yKM))
-print(v_measure_score(YseedDataSet, yKM))
+print(mutual_info_score(YseedDataSet, yKM))
 
 # KMedoids - Неиерархический, итеративный метод
-kMedoids = KMedoids(n_clusters=5, metric = 'euclidean')
+kMedoids = KMedoids(n_clusters=3, metric = 'euclidean')
 yminiKM = kMedoids.fit_predict(X = pcaXseedDataSet_transformed)
 clusterVisualize(yminiKM, pcaXseedDataSet_transformed, kMedoids)
 print(homogeneity_completeness_v_measure(YseedDataSet, yminiKM))
-print(homogeneity_score(YseedDataSet, yminiKM))
-print(completeness_score(YseedDataSet, yminiKM))
-print(v_measure_score(YseedDataSet, yminiKM))
+print(mutual_info_score(YseedDataSet, yminiKM))
 
-kMedoids = KMedoids(n_clusters=5, metric = 'manhattan')
+kMedoids = KMedoids(n_clusters=3, metric = 'manhattan')
 yminiKM = kMedoids.fit_predict(X = pcaXseedDataSet_transformed)
 clusterVisualize(yminiKM, pcaXseedDataSet_transformed, kMedoids)
 print(homogeneity_completeness_v_measure(YseedDataSet, yminiKM))
-print(homogeneity_score(YseedDataSet, yminiKM))
-print(completeness_score(YseedDataSet, yminiKM))
-print(v_measure_score(YseedDataSet, yminiKM))
+print(mutual_info_score(YseedDataSet, yminiKM))
 
 # AgglomerativeClustering - Иерархический агломеративный метод
 acSingleEUC = AgglomerativeClustering(n_clusters=3, affinity='euclidean', linkage='ward')
 yACSingleEUC = acSingleEUC.fit_predict(X = pcaXseedDataSet_transformed)
 clusterVisualize(yACSingleEUC, pcaXseedDataSet_transformed, acSingleEUC)
 print(homogeneity_completeness_v_measure(YseedDataSet, yACSingleEUC))
-print(homogeneity_score(YseedDataSet, yACSingleEUC))
-print(completeness_score(YseedDataSet, yACSingleEUC))
-print(v_measure_score(YseedDataSet, yACSingleEUC))
+print(mutual_info_score(YseedDataSet, yACSingleEUC))
 
 acSingleMAN = AgglomerativeClustering(n_clusters=3, affinity='manhattan', linkage='complete')
 yACSingleMAN = acSingleMAN.fit_predict(X = pcaXseedDataSet_transformed)
 clusterVisualize(yACSingleMAN, pcaXseedDataSet_transformed, acSingleMAN)
 print(homogeneity_completeness_v_measure(YseedDataSet, yACSingleEUC))
-print(homogeneity_score(YseedDataSet, yACSingleEUC))
-print(completeness_score(YseedDataSet, yACSingleEUC))
-print(v_measure_score(YseedDataSet, yACSingleEUC))
+print(mutual_info_score(YseedDataSet, yACSingleEUC))
