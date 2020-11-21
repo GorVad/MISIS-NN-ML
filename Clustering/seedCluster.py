@@ -1,5 +1,6 @@
 from sklearn.cluster import KMeans, AgglomerativeClustering, MiniBatchKMeans
 from sklearn.metrics import homogeneity_completeness_v_measure, homogeneity_score, completeness_score, v_measure_score
+from sklearn_extra.cluster import KMedoids
 from sklearn import decomposition
 import pandas as pd
 
@@ -32,7 +33,7 @@ def clusterVisualize (y_km, X, cMethod):
     plt.show()
 
 # Подготовка данных
-seedDataSet = pd.read_csv("D:\PyCharm\MISIS-NN-ML\Clustering\DataSets\seeds.csv").dropna()
+seedDataSet = pd.read_csv("D:\Development\PyCharm\MISIS-NN-ML\Clustering\DataSets\seeds.csv").dropna()
 XseedDataSet = seedDataSet.drop(columns=[seedDataSet.columns[7]])
 pca = decomposition.PCA(2)
 pcaXseedDataSet_transformed = pca.fit_transform(XseedDataSet)
@@ -50,10 +51,18 @@ print(homogeneity_score(YseedDataSet, yKM))
 print(completeness_score(YseedDataSet, yKM))
 print(v_measure_score(YseedDataSet, yKM))
 
-# AgglomerativeClustering - Неиерархический, итеративный метод
-miniKM = MiniBatchKMeans(n_clusters=3)
-yminiKM = miniKM.fit_predict(pcaXseedDataSet_transformed)
-clusterVisualize(yminiKM, pcaXseedDataSet_transformed, miniKM)
+# KMedoids - Неиерархический, итеративный метод
+kMedoids = KMedoids(n_clusters=5, metric = 'euclidean')
+yminiKM = kMedoids.fit_predict(X = pcaXseedDataSet_transformed)
+clusterVisualize(yminiKM, pcaXseedDataSet_transformed, kMedoids)
+print(homogeneity_completeness_v_measure(YseedDataSet, yminiKM))
+print(homogeneity_score(YseedDataSet, yminiKM))
+print(completeness_score(YseedDataSet, yminiKM))
+print(v_measure_score(YseedDataSet, yminiKM))
+
+kMedoids = KMedoids(n_clusters=5, metric = 'manhattan')
+yminiKM = kMedoids.fit_predict(X = pcaXseedDataSet_transformed)
+clusterVisualize(yminiKM, pcaXseedDataSet_transformed, kMedoids)
 print(homogeneity_completeness_v_measure(YseedDataSet, yminiKM))
 print(homogeneity_score(YseedDataSet, yminiKM))
 print(completeness_score(YseedDataSet, yminiKM))

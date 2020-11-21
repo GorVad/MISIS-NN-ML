@@ -1,6 +1,7 @@
 from sklearn.cluster import KMeans, AgglomerativeClustering, MiniBatchKMeans
 from sklearn.datasets import make_blobs
 from sklearn.metrics import homogeneity_completeness_v_measure, homogeneity_score, completeness_score, v_measure_score
+from sklearn_extra.cluster import KMedoids
 from sklearn import decomposition
 import pandas as pd
 
@@ -33,7 +34,7 @@ def clusterVisualize (y_km, X, cMethod):
     plt.show()
 
 # Подготовка данных
-CD4DataSet = make_blobs(n_samples=10000, cluster_std=3.5, centers=3)
+CD4DataSet = make_blobs(n_samples=1000, cluster_std=3.5, centers=3)
 XCD4DataSet, YCD4DataSet = CD4DataSet
 pca = decomposition.PCA(2)
 pcaXCD4DataSet_transformed = pca.fit(XCD4DataSet).transform(XCD4DataSet)
@@ -49,10 +50,18 @@ print(homogeneity_score(YCD4DataSet, yKM))
 print(completeness_score(YCD4DataSet, yKM))
 print(v_measure_score(YCD4DataSet, yKM))
 
-# AgglomerativeClustering - Неиерархический, итеративный метод
-miniKM = MiniBatchKMeans(n_clusters=3)
-yminiKM = miniKM.fit_predict(pcaXCD4DataSet_transformed)
-clusterVisualize(yminiKM, pcaXCD4DataSet_transformed, miniKM)
+# KMedoids - Неиерархический, итеративный метод
+kMedoids = KMedoids(n_clusters=3, metric = 'euclidean')
+yminiKM = kMedoids.fit_predict(X = pcaXCD4DataSet_transformed)
+clusterVisualize(yminiKM, pcaXCD4DataSet_transformed, kMedoids)
+print(homogeneity_completeness_v_measure(YCD4DataSet, yminiKM))
+print(homogeneity_score(YCD4DataSet, yminiKM))
+print(completeness_score(YCD4DataSet, yminiKM))
+print(v_measure_score(YCD4DataSet, yminiKM))
+
+kMedoids = KMedoids(n_clusters=3, metric = 'manhattan')
+yminiKM = kMedoids.fit_predict(X = pcaXCD4DataSet_transformed)
+clusterVisualize(yminiKM, pcaXCD4DataSet_transformed, kMedoids)
 print(homogeneity_completeness_v_measure(YCD4DataSet, yminiKM))
 print(homogeneity_score(YCD4DataSet, yminiKM))
 print(completeness_score(YCD4DataSet, yminiKM))
