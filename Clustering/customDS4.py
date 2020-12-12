@@ -1,6 +1,6 @@
 from sklearn.cluster import KMeans, AgglomerativeClustering, MiniBatchKMeans
 from sklearn.datasets import make_blobs
-from sklearn.metrics import homogeneity_completeness_v_measure, mutual_info_score
+from sklearn.metrics import homogeneity_completeness_v_measure, homogeneity_score, completeness_score, v_measure_score
 from sklearn_extra.cluster import KMedoids
 from sklearn import decomposition
 import pandas as pd
@@ -42,34 +42,44 @@ pcaXCD4DataSet_transformed = pca.fit(XCD4DataSet).transform(XCD4DataSet)
 optimalClusterClasses(pcaXCD4DataSet_transformed) # Оптимальное количество - 5 кластеров
 
 # k-means
-km = KMeans(n_clusters=5)
+km = KMeans(n_clusters=3)
 yKM = km.fit_predict(pcaXCD4DataSet_transformed)
 clusterVisualize(yKM, pcaXCD4DataSet_transformed, km)
 print(homogeneity_completeness_v_measure(YCD4DataSet, yKM))
-print(mutual_info_score(YCD4DataSet, yKM))
+print(homogeneity_score(YCD4DataSet, yKM))
+print(completeness_score(YCD4DataSet, yKM))
+print(v_measure_score(YCD4DataSet, yKM))
 
 # KMedoids - Неиерархический, итеративный метод
-kMedoids = KMedoids(n_clusters=5, metric = 'euclidean')
+kMedoids = KMedoids(n_clusters=3, metric = 'euclidean')
 yminiKM = kMedoids.fit_predict(X = pcaXCD4DataSet_transformed)
 clusterVisualize(yminiKM, pcaXCD4DataSet_transformed, kMedoids)
 print(homogeneity_completeness_v_measure(YCD4DataSet, yminiKM))
-print(mutual_info_score(YCD4DataSet, yminiKM))
+print(homogeneity_score(YCD4DataSet, yminiKM))
+print(completeness_score(YCD4DataSet, yminiKM))
+print(v_measure_score(YCD4DataSet, yminiKM))
 
-kMedoids = KMedoids(n_clusters=5, metric = 'manhattan')
+kMedoids = KMedoids(n_clusters=3, metric = 'manhattan')
 yminiKM = kMedoids.fit_predict(X = pcaXCD4DataSet_transformed)
 clusterVisualize(yminiKM, pcaXCD4DataSet_transformed, kMedoids)
 print(homogeneity_completeness_v_measure(YCD4DataSet, yminiKM))
-print(mutual_info_score(YCD4DataSet, yminiKM))
+print(homogeneity_score(YCD4DataSet, yminiKM))
+print(completeness_score(YCD4DataSet, yminiKM))
+print(v_measure_score(YCD4DataSet, yminiKM))
 
 # AgglomerativeClustering - Иерархический агломеративный метод
-acSingleEUC = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='ward')
+acSingleEUC = AgglomerativeClustering(n_clusters=3, affinity='euclidean', linkage='ward')
 yACSingleEUC = acSingleEUC.fit_predict(X = pcaXCD4DataSet_transformed)
 clusterVisualize(yACSingleEUC, pcaXCD4DataSet_transformed, acSingleEUC)
 print(homogeneity_completeness_v_measure(YCD4DataSet, yACSingleEUC))
-print(mutual_info_score(YCD4DataSet, yACSingleEUC))
+print(homogeneity_score(YCD4DataSet, yACSingleEUC))
+print(completeness_score(YCD4DataSet, yACSingleEUC))
+print(v_measure_score(YCD4DataSet, yACSingleEUC))
 
-acSingleMAN = AgglomerativeClustering(n_clusters=5, affinity='manhattan', linkage='complete')
+acSingleMAN = AgglomerativeClustering(n_clusters=3, affinity='manhattan', linkage='complete')
 yACSingleMAN = acSingleMAN.fit_predict(X = pcaXCD4DataSet_transformed)
 clusterVisualize(yACSingleMAN, pcaXCD4DataSet_transformed, acSingleMAN)
 print(homogeneity_completeness_v_measure(YCD4DataSet, yACSingleEUC))
-print(mutual_info_score(YCD4DataSet, yACSingleEUC))
+print(homogeneity_score(YCD4DataSet, yACSingleEUC))
+print(completeness_score(YCD4DataSet, yACSingleEUC))
+print(v_measure_score(YCD4DataSet, yACSingleEUC))
