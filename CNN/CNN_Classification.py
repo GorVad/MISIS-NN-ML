@@ -70,6 +70,8 @@ model.add(Dense(64, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(10, activation='softmax'))
 
+print(model.summary())
+
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy', tensorflow.keras.metrics.Precision(), tensorflow.keras.metrics.Recall()])
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=3)
 history = model.fit(X_train, y_train, epochs=20, batch_size=32, validation_data=(X_test, y_test), callbacks=[es])
