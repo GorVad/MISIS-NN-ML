@@ -3,6 +3,11 @@ import seaborn as sns;
 from sklearn.metrics import confusion_matrix
 from sklearn import metrics
 
+import pandas as pd
+import numpy
+
+import tensorflow_datasets as tfds
+import tensorflow as tf
 from tensorflow.keras.datasets import cifar100, cifar10
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
@@ -10,7 +15,6 @@ from tensorflow.keras.losses import sparse_categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 import matplotlib.pyplot as plt
 from tensorflow.python.keras.callbacks import EarlyStopping
-
 
 def metric(history, X_train, y_train, X_test, y_test):
     plt.plot(history.history['accuracy'])
@@ -72,26 +76,26 @@ print(model.summary())
 
 
 # Обучение не основании CIFAR-10
-(X_train_10, y_train_10), (X_test_10, y_test_10) = cifar10.load_data()
-
-X_train_10 = X_train_10.astype('float32')
-X_test_10 = X_test_10.astype('float32')
-
-X_train_10 = X_train_10 / 255
-X_test_10 = X_test_10 / 255
-
-history = model.fit(X_train_10, y_train_10,
-                    batch_size=batch_size,
-                    epochs=no_epochs,
-                    verbose=verbosity,
-                    validation_split=validation_split,
-                    callbacks=[es])
-
-metric(history, X_train_10, y_train_10, X_test_10, y_test_10)
+# (X_train_10, y_train_10), (X_test_10, y_test_10) = cifar10.load_data()
+#
+# X_train_10 = X_train_10.astype('float32')
+# X_test_10 = X_test_10.astype('float32')
+#
+# X_train_10 = X_train_10 / 255
+# X_test_10 = X_test_10 / 255
+#
+# history = model.fit(X_train_10, y_train_10,
+#                     batch_size=batch_size,
+#                     epochs=no_epochs,
+#                     verbose=verbosity,
+#                     validation_split=validation_split,
+#                     callbacks=[es])
+#
+# metric(history, X_train_10, y_train_10, X_test_10, y_test_10)
 
 
 # Дообучение на суперклассе Household Furniture CIFAR-100
-(X_train_100, y_train_100), (X_test_100, y_test_100) = cifar100.load_data()
+(X_train_100, y_train_100), (X_test_100, y_test_100) = cifar100.load_data(label_mode="coarse")
 
 X_train_100 = X_train_100.astype('float32')
 X_test_100 = X_test_100.astype('float32')
