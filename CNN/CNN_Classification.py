@@ -31,19 +31,27 @@ def metric(history, X_train, y_train, X_test, y_test):
     print('Recall для тестового множества:', metrics.recall_score(y_test, predictions_test, average='macro'))
     print('F1-measure для тестового множества:', metrics.f1_score(y_test, predictions_test, average='macro'))
 
+    cm = confusion_matrix(y_test, predictions_test)
+    print("Матрица ошибок для тестового множества:\n", cm)
+    plt.figure(figsize=(9, 9))
+    sns.heatmap(cm, cbar=False, fmt='d', annot=True, cmap=plt.cm.Blues)
+    plt.xlabel('Predicted')
+    plt.ylabel('Actual')
+    plt.show()
+
     predictions_train = np.argmax(model.predict(X_train), axis=1)
     print('Accuracy для тренировочного множества:', metrics.accuracy_score(y_train, predictions_train))
     print('Precision для тренировочного множества:', metrics.precision_score(y_train, predictions_train, average='macro'))
     print('Recall для тренировочного множества:', metrics.recall_score(y_train, predictions_train, average='macro'))
     print('F1-measure для тренировочного множества:', metrics.f1_score(y_train, predictions_train, average='macro'))
 
-    cm = confusion_matrix(y_test, predictions_test)
+    cm = confusion_matrix(y_train, predictions_train)
+    print("Матрица ошибок для тренировочного множества:\n", cm)
     plt.figure(figsize=(9, 9))
     sns.heatmap(cm, cbar=False, fmt='d', annot=True, cmap=plt.cm.Blues)
     plt.xlabel('Predicted')
     plt.ylabel('Actual')
     plt.show()
-    print("Матрица ошибок:\n", cm)
 
 # Конфигурация модели
 batch_size = 50
@@ -58,16 +66,15 @@ input_shape = (img_width, img_height, img_num_channels)
 
 # Создание модели
 model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(32, kernel_size=3, activation='relu', input_shape = (32, 32, 3)))
+model.add(MaxPooling2D(pool_size= (2,2), strides=2))
+model.add(Conv2D(64, kernel_size=3, activation='relu'))
+model.add(MaxPooling2D(pool_size = (2,2), strides= 2))
+model.add(Conv2D(64, kernel_size= 3, activation = 'relu'))
+model.add(MaxPooling2D(pool_size = (2,2), strides= 2))
 model.add(Flatten())
-model.add(Dense(256, activation='relu'))
-model.add(Dense(128, activation='relu'))
-model.add(Dense(100, activation='softmax'))
+model.add(Dense(512, activation = 'relu'))
+model.add(Dense(100, activation = 'softmax'))
 
 # Компиляция модели
 model.compile(loss=loss_function, optimizer=optimizer, metrics=['accuracy'])
@@ -76,22 +83,22 @@ print(model.summary())
 
 
 # Обучение не основании CIFAR-10
-# (X_train_10, y_train_10), (X_test_10, y_test_10) = cifar10.load_data()
-#
-# X_train_10 = X_train_10.astype('float32')
-# X_test_10 = X_test_10.astype('float32')
-#
-# X_train_10 = X_train_10 / 255
-# X_test_10 = X_test_10 / 255
-#
-# history = model.fit(X_train_10, y_train_10,
-#                     batch_size=batch_size,
-#                     epochs=no_epochs,
-#                     verbose=verbosity,
-#                     validation_split=validation_split,
-#                     callbacks=[es])
-#
-# metric(history, X_train_10, y_train_10, X_test_10, y_test_10)
+(X_train_10, y_train_10), (X_test_10, y_test_10) = cifar10.load_data()
+
+X_train_10 = X_train_10.astype('float32')
+X_test_10 = X_test_10.astype('float32')
+
+X_train_10 = X_train_10 / 255
+X_test_10 = X_test_10 / 255
+
+history = model.fit(X_train_10, y_train_10,
+                    batch_size=batch_size,
+                    epochs=no_epochs,
+                    verbose=verbosity,
+                    validation_split=validation_split,
+                    callbacks=[es])
+
+metric(history, X_train_10, y_train_10, X_test_10, y_test_10)
 
 
 # Дообучение на суперклассе Household Furniture CIFAR-100
