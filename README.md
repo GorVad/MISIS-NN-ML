@@ -14,3 +14,4 @@ mark.AddExtension(new Profile());
 
 mark.Transform(text);
 ```
+[1 лабораторная работа] (https://github.com/GorVad/MISIS-NN-ML/blob/master/CNN/CNN_Classification.py)
